@@ -1,4 +1,9 @@
 def call(Map params) {
+    // Validate that params is not null
+    if (params == null) {
+        error "Input parameters map cannot be null."
+    }
+    
     // Validate that the required parameters are provided
     if (!params.containsKey('imageName') || params.imageName == null || params.imageName.trim() == '') {
         error "Image name is required."
