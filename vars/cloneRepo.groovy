@@ -1,4 +1,9 @@
 def call(Map params) {
+    // Validate that params is not null
+    if (params == null) {
+        error "Input parameters map cannot be null."
+    }
+
     // Retrieve parameters with defaults
     def repoUrl = params.get('repoUrl', '')
     def branch = params.get('branch', 'main')
