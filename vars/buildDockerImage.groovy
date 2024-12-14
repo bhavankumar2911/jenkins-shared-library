@@ -28,7 +28,9 @@ def call(Map params) {
     def customImage = docker.build("${imageName}:${tag}", ".")
 
     if (ecrRepoUrl) {
-        customImage.tag("${ecrRepoUrl}:${tag}")
+        // Tag the image for AWS ECR
+        def ecrTag = "${ecrRepoUrl}:${tag}"
+        customImage.tag(ecrTag)
         echo "Tagged image for ECR: ${ecrRepoUrl}:${tag}"
     }
 }
