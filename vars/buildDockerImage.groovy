@@ -25,7 +25,7 @@ def call(Map params) {
     def ecrRepoUrl = params.get('ecrRepoUrl', '')
     
     // Build the Docker image using the Jenkins docker plugin
-    def customImage = docker.build("${imageName}:${tag}", ".")
+    def customImage = docker.build("${ecrRepoUrl}:${tag}", ".")
 
     if (ecrRepoUrl) {
         // Tag the image for AWS ECR
