@@ -8,6 +8,10 @@ def call(Map params) {
     if (!params.containsKey('imageName') || params.imageName == null || params.imageName.trim() == '') {
         error "Image name is required."
     }
+    // Validate that the required parameters are provided
+    if (!params.containsKey('ecrRepoUrl') || params.ecrRepoUrl == null || params.ecrRepoUrl.trim() == '') {
+        error "ECR repo URL is required."
+    }
     def imageName = params.imageName
 
     def tag = params.get('tag', 'latest')  // Default to 'latest' if not provided
@@ -17,17 +21,13 @@ def call(Map params) {
     echo "Building Docker image: ${imageName}:${tag}"
     echo "Dockerfile path: ${dockerfilePath}"
 
-    // Build Docker image using the specified Dockerfile
-    script {
-        try {
-            // Run Docker build command
-            // docker.build("${imageName}:${tag}", "-f ${dockerfilePath}/Dockerfile .")
-            // Run the Docker build command using 'sh'
-            sh """
-                docker build -t ${imageName}:${tag} -f ${dockerfilePath}/Dockerfile .
-            """
-        } catch (Exception e) {
-            error "Failed to build Docker image: ${e.message}"
-        }
+    // Build the Docker image using the Jenkins docker plugin
+    def customImage = docker.build("${imageName}:${tag}", "-f ${dockerfilePath} .")
+
+    // Tag the image for AWS ECR (Optional)
+    def ecrRepoUrl = params.get('ecrRepoUrl', '')
+    if (ecrRepoUrl) {
+        customImage.tag("${ecrRepoUrl}:${tag}")
+        echo "Tagged image for ECR: ${ecrRepoUrl}:${tag}"
     }
 }
