@@ -30,7 +30,7 @@ def call(Map params) {
     if (ecrRepoUrl) {
         // Tag the image for AWS ECR
         def ecrTag = "${ecrRepoUrl}:${tag}"
-        customImage.tag(ecrTag)
-        echo "Tagged image for ECR: ${ecrRepoUrl}:${tag}"
+        // customImage.tag(ecrTag)
+        echo "Tagged image for ECR: ${ecrTag}"
     }
 }
