@@ -21,7 +21,11 @@ def call(Map params) {
     script {
         try {
             // Run Docker build command
-            docker.build("${imageName}:${tag}", "-f ${dockerfilePath}/Dockerfile .")
+            // docker.build("${imageName}:${tag}", "-f ${dockerfilePath}/Dockerfile .")
+            // Run the Docker build command using 'sh'
+            sh """
+                docker build -t ${imageName}:${tag} -f ${dockerfilePath}/Dockerfile .
+            """
         } catch (Exception e) {
             error "Failed to build Docker image: ${e.message}"
         }
