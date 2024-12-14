@@ -22,7 +22,7 @@ def call(Map params) {
     echo "Dockerfile path: ${dockerfilePath}"
 
     // Build the Docker image using the Jenkins docker plugin
-    def customImage = docker.build("${imageName}:${tag}", "-f ${dockerfilePath} .")
+    def customImage = docker.build("${imageName}:${tag}", ".")
 
     // Tag the image for AWS ECR (Optional)
     def ecrRepoUrl = params.get('ecrRepoUrl', '')
